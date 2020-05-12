@@ -1,11 +1,30 @@
+from djitellopy import Tello
 import cv2
 
-capture = cv2.VideoCapture(0)
+width = 640  # WIDTH OF THE IMAGE
+height = 480  # HEIGHT OF THE IMAGE
 
-while capture.isOpened():
+drone = Tello()
+drone.connect()
+drone.streamoff()
+drone.streamon()
+
+
+capture = cv2.VideoCapture(1)
+capture.set(3, width)
+capture.set(4, height)
+
+
+while True:
+
+    frame_read = drone.get_frame_read()
+    droneFrame = frame_read.frame
+    image_code = cv2.resize(droneFrame, (width, height))
+
+    list_marker = []
+    list_marker_and_code = []
     ret, image_input = capture.read()
     if ret:
-        image_code = image_input.copy()
         corners, ids, _ = cv2.aruco.detectMarkers(cv2.cvtColor(image_input, cv2.COLOR_BGR2GRAY), cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_6X6_250))
         cv2.aruco.drawDetectedMarkers(image_code, corners, ids)
         cv2.imshow("frame", image_code)
@@ -16,4 +35,3 @@ while capture.isOpened():
 
 capture.release()
 cv2.destroyAllWindows()
-
