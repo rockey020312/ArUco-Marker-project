@@ -1,7 +1,6 @@
 import cv2
 import numpy as np
 
-
 def check_edge(check_marker):
     edge_white = 0
     for i in range(marker_cell):
