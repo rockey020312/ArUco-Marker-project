@@ -24,6 +24,7 @@ def check_edge(check_marker):
     return edge_white
 
 
+
 input_name = 'image2.jpg'
 list_marker = []
 marker_size = 200
